@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        window.addEventListener("DOMContentLoaded",init);
+
+        const workerName = `monWorker`;
+        const scriptName = `worker2`;
+        async function init(){
+            const reponse = await fetch(
+                "http://localhost:3000/api/v1/workers",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({workerName,scriptName})
+                }
+            );
+            //On récupère le worker créé... ou pas!
+            const myWorker = await reponse.json();
+
+            /* Partie consacrée à la communication avec le worker créé */
+            // Créer une connexion WebSocket avec le worker (on suppose que le port est 8080)
+            const socket = new WebSocket("ws://localhost:8080");
+            // La connexion une fois ouverte, on salue son worker
+            socket.addEventListener("open", function (event) {
+                socket.send("Bonjour mon worker!");
+            });
+            // puis on se met à l'écoute de son worker
+            socket.addEventListener("message", function (event) {
+                console.log("Voici un message du worker", event.data);
+            });
+        }
+
+    </script>
+
+</head>
+
+<body>
+
+</body>
+
+
+
+</html>
