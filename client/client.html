@@ -51,11 +51,10 @@
             }
         );
         //On récupère le worker créé... ou pas!
-        const myWorker = await reponse.json();
-
+        const port = await reponse.json();
         /* Partie consacrée à la communication avec le worker créé */
         // Créer une connexion WebSocket avec le worker (on suppose que le port est 8080)
-        const socket = new WebSocket("ws://localhost:8080");
+        const socket = new WebSocket("ws://localhost:"+port);
         // La connexion une fois ouverte, on salue son worker
         socket.addEventListener("open", function (event) {
             socket.send("Bonjour mon worker!");

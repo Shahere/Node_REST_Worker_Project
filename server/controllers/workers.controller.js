@@ -1,5 +1,5 @@
-const {getPort} = require("get-port")
 const { WorkersService } = require('../use-cases/WorkersService')
+const { PortExplorer } = require('../use-cases/PortExplorer')
 
 function getWorkers(req, res, next) {
   try {
@@ -16,8 +16,14 @@ function getWorkers(req, res, next) {
 
 async function addWorker(req, res, next){
   try {
-
-    let port = await getPort({port: 3000});
+    let port = null;
+    let portInstance = PortExplorer.getInstance()
+    await portInstance.getAvailablePort(3000, 9000, (err, portA) => {
+      if(err) {
+        console.error('Error findong a port : '+err)
+      }
+      port = portA
+    });
 
     let instance = WorkersService.getInstance();
     let {workerName,scriptName} = req.body;
