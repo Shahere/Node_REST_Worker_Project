@@ -46,10 +46,10 @@ class WorkersService extends Map{
 		this.forEach((value,key,map)=>{console.log(`remove --- MAP[${key}] = ${value}`)})
 	}
 
-	terminate(key) {
-		console.log("end proccess : "+key)
+	terminate(keyTerm) {
+		console.log("end proccess : "+keyTerm)
 		this.forEach((value, key) => {
-			if(key == key) {
+			if(keyTerm == key) {
 				value.kill()
 			}
 		})
