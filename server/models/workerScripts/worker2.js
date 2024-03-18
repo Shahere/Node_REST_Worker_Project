@@ -1,7 +1,7 @@
 const { parentPort, workerData } = require('worker_threads')
 const { WebSocketServer } = require('ws');
 
-const wss = new WebSocketServer({ port: 8080 });
+const wss = new WebSocketServer({ port: workerData.port });
 
 console.log("Launching WS...")
 

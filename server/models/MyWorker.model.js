@@ -9,9 +9,10 @@ workerScripts['worker3'] = './models/workerScripts/worker3.js';
 
 
 class MyWorker{
-    constructor({workerName,scriptName,workersService}){
+    constructor({workerName,scriptName,workersService,port}){
 
         console.log({workerName,scriptName})
+        this.port = port
         this.workerName = workerName;
         this.scriptFile = workerScripts[scriptName];
         this.workersService = workersService
@@ -20,7 +21,7 @@ class MyWorker{
 
     async start(){
         return new Promise((resolve, reject) => {
-            const worker = new Worker( this.scriptFile, {workerData: {name:this.workerName,counter:42}} );
+            const worker = new Worker( this.scriptFile, {workerData: {name:this.workerName,counter:42,port:this.port}} );
             this.job = worker;
             worker.on(
                 'online', 
