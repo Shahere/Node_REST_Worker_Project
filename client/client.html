@@ -10,6 +10,8 @@
     <h1>Hello world!</h1>
     <button id="btn_get">GET</button>
     <button id="btn_create">CREATE</button>
+    <button id="btn_update">UPDATE</button>
+    <button id="btn_delete">DELETE</button>
 </body>
 
 
@@ -19,8 +21,11 @@
 <script>
     let btn_get = document.getElementById("btn_get")
     let btn_create = document.getElementById("btn_create")
+    let btn_update = document.getElementById("btn_update")
+    let btn_delete = document.getElementById("btn_delete")
 
-    btn_get.addEventListener("click",async () => {
+
+    btn_get.addEventListener("click", async () => {
         const reponse = await fetch(
             "http://localhost:3000/api/v1/workers",
             {
@@ -30,8 +35,10 @@
         console.log(await reponse.json())
     })
 
-    btn_create.addEventListener("click",async () => {
+    btn_create.addEventListener("click", async () => {
         const workerName = `monWorker`;
+        const oldWorkerName = 'monWorker';
+        const newWorkerName = 'monWorkerNEWWW'
         const scriptName = `worker2`;
         const reponse = await fetch(
             "http://localhost:3000/api/v1/workers",
@@ -59,5 +66,35 @@
         });
 
     })
+
+    btn_delete.addEventListener("click", async () => {
+        const workerName = `monWorker`;
+        const reponse = await fetch(
+            "http://localhost:3000/api/v1/workers",
+            {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ workerName })
+            }
+        );
+    })
+
+    btn_update.addEventListener("click", async () => {
+        const oldWorkerName = 'monWorker';
+        const newWorkerName = 'monWorkerNEWWW'
+        const reponse = await fetch(
+            "http://localhost:3000/api/v1/workers",
+            {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ oldWorkerName, newWorkerName })
+            }
+        );
+    })
+
 
 </script>

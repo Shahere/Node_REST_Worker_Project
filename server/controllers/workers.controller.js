@@ -25,20 +25,38 @@ function addWorker(req, res, next){
   }
 }
 
-function deleteWorker(req, res, next) {
+function updateWorker(req, res, next) {
+  console.log("Update...")
   try {
-    
+    let instance = WorkersService.getInstance();
+    console.log(req.body)
+    let oldKey = req.body.oldWorkerName
+    let newKey = req.body.newWorkerName
+    instance.update(oldKey, newKey)
+    res.json(newKey)
   } catch (error) {
-    
+    console.error(`>>> ${error} ${error.stack}`)
+    res.status(500).send('Internal Server Error')
   }
 }
 
-function updateWorker(req, res, next) {
-  
+function deleteWorker(req, res, next) {
+  console.log("Delete...")
+  try {
+    let instance = WorkersService.getInstance();
+    instance.terminate(req.body.workerName)
+    instance.remove(req.body.workerName)
+    res.json(req.body.workerName)
+  } catch (error) {
+    console.error(`>>> ${error} ${error.stack}`)
+    res.status(500).send('Internal Server Error')
+  }
 }
 
 
 module.exports = {
   getWorkers,
-  addWorker
+  addWorker, 
+  updateWorker,
+  deleteWorker
 }

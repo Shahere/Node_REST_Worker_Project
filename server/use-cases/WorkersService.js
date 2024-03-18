@@ -46,6 +46,29 @@ class WorkersService extends Map{
 		this.forEach((value,key,map)=>{console.log(`remove --- MAP[${key}] = ${value}`)})
 	}
 
+	terminate(key) {
+		console.log("end proccess : "+key)
+		this.forEach((value, key) => {
+			if(key == key) {
+				value.kill()
+			}
+		})
+	}
+
+	update(oldKey,newKey) {
+		console.log("Update key")
+		let valueV
+		this.forEach((value, key) => {
+			console.log(key+" "+oldKey)
+			if(key == oldKey) {
+				valueV = value
+				this.remove(key)
+			}
+		})
+		this.set(newKey, valueV)
+		console.log("Update finished")
+	}
+
 }
 
 module.exports = { WorkersService };

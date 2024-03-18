@@ -45,7 +45,8 @@ class MyWorker{
                 code => {
                     this.workersService.remove(this.workerName);
                     if (code !== 0) {
-                        reject(new Error(`Worker stopped with exit code ${code}`))
+                        //reject(new Error(`Worker stopped with exit code ${code}`))
+                        console.warn('Worker has been stopped')
                     }
                 }
             );
