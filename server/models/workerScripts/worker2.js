@@ -3,31 +3,34 @@ const { WebSocketServer } = require('ws');
 
 const wss = new WebSocketServer({ port: 8080 });
 
+console.log("Launching WS...")
+
 wss.on('connection', function connection(wss) {
+  console.log("Connection established")
+  let increment = 0;
+  add(increment);
 
-  
-let increment = 0;
-add(increment);
-
-function add(i){
-  if (i !== 100) {
-    increment = i+1;
-    setTimeout(()=>{add(increment)},1000)
-    wss.send(`${workerData.name} says that i is ${increment}`);
-  }else{
-    const message = workerData.name+' is done' 
-    parentPort.postMessage(message)
-    wss.send(`${workerData.name} is done`);
+  function add(i) {
+    if (i !== 100) {
+      increment = i + 1;
+      setTimeout(() => { add(increment) }, 1000)
+      wss.send(`${workerData.name} says that i is ${increment}`);
+    } else {
+      const message = workerData.name + ' is done'
+      parentPort.postMessage(message)
+      wss.send(`${workerData.name} is done`);
+    }
+    return i
   }
-  return i
-}
 
 
   wss.on('message', function message(data) {
     console.log('received: %s', data);
   });
 
-  
+  wss.on('error', function errorWS(data) {
+    console.error(data)
+  })
 });
 
 
