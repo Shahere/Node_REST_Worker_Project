@@ -64,6 +64,10 @@
             console.log("Voici un message du worker", event.data);
         });
 
+        socket.addEventListener("error", function (err) {
+            console.error(err)
+        })
+
     })
 
     btn_delete.addEventListener("click", async () => {
