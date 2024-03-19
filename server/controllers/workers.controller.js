@@ -39,9 +39,22 @@ async function addWorker(req, res, next) {
     });
 
     let instance = WorkersService.getInstance();
-    let { workerName, scriptName } = req.body;
-    const worker = await instance.addWorker({ workerName, scriptName, port });
-    res.json(port);
+    let {workerName,scriptName} = req.body;
+    const worker = await instance.addWorker({workerName,scriptName,port});
+    res.json(workerName);
+  } catch (error) {
+    console.error(`>>> ${error} ${error.stack}`)
+    res.status(500).send('Internal Server Error')
+  }
+}
+
+async function start(req, res, next) {
+  console.log("Start req " + req.body + "...")
+  try {
+    let instance = WorkersService.getInstance();
+    let newWorker = instance.get("test");
+    let res = await newWorker.start();
+    res.json(res)
   } catch (error) {
     console.error(`>>> ${error} ${error.stack}`)
     res.status(500).send('Internal Server Error')
@@ -76,11 +89,26 @@ function deleteWorker(req, res, next) {
   }
 }
 
+function stop(req, res, next) {
+  console.log("Delete...")
+  try {
+    let instance = WorkersService.getInstance();
+    instance.terminate(req.body.workerName)
+    instance.remove(req.body.workerName)
+    res.json(req.body.workerName)
+  } catch (error) {
+    console.error(`>>> ${error} ${error.stack}`)
+    res.status(500).send('Internal Server Error')
+  }
+}
+
 
 module.exports = {
   getWorkers,
   getWorker,
   addWorker,
   updateWorker,
-  deleteWorker
+  deleteWorker,
+  start,
+  stop
 }

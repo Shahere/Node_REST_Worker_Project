@@ -25,12 +25,15 @@
 </html>
 
 <script>
+    let id;
     let ip = '127.0.0.1'
     let btn_get = document.getElementById("btn_get")
     let btn_get_spe = document.getElementById("btn_get_spe")
     let btn_create = document.getElementById("btn_create")
     let btn_update = document.getElementById("btn_update")
     let btn_delete = document.getElementById("btn_delete")
+    let btn_start = document.getElementById("btn_start")
+    let btn_stop = document.getElementById("btn_stop")
 
     let btn_token_n = document.getElementById("btn_token_n")
 
@@ -82,13 +85,9 @@
         }
     })
 
-    btn_create.addEventListener("click", async () => {
-        const workerName = `monWorker`;
-        const oldWorkerName = 'monWorker';
-        const newWorkerName = 'monWorkerNEWWW'
-        const scriptName = `worker2`;
+    btn_start.addEventListener("click", async () => {
         const reponse = await fetch(
-            "http://" + ip + ":3000/api/v1/workers",
+            "http://localhost:3000/api/v1/workers",
             {
                 method: "POST",
                 headers: {
@@ -118,6 +117,32 @@
         socket.addEventListener("error", function (err) {
             console.error(err)
         })
+    })
+
+    btn_stop.addEventListener("click", async () => {
+        const reponse = await fetch(
+            "http://localhost:3000/api/v1/workers",
+            {
+                method: "GET",
+            }
+        );
+        console.log(await reponse.json())
+    })
+
+    btn_create.addEventListener("click", async () => {
+        const workerName = `monWorker`;
+        const scriptName = `worker2`;
+        id = await fetch(
+            "http://" + ip + ":3000/api/v1/workers",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({workerName, scriptName})
+            }
+        )
+
 
     })
 

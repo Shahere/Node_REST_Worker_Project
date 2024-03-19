@@ -29,9 +29,10 @@ router.use('/', function (req, res, next) {
 })
 
 router.get('/', workersController.getWorkers)
-router.get('/:workerName', workersController.getWorker)
-router.post('/', workersController.addWorker)
-router.delete('/', workersController.deleteWorker)
-router.patch('/', workersController.updateWorker)
+router.post('/',workersController.addWorker)
+router.get('/:id/start',workersController.start)
+router.get('/:id/stop',workersController.stop)
+router.delete('/:id', workersController.deleteWorker)
+router.patch('/:id', workersController.updateWorker)
 
 module.exports = router
