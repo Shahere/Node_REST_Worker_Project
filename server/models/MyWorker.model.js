@@ -33,8 +33,10 @@ class MyWorker{
             worker.on(
                 'message', 
                 messageFromWorker => {
+                    if(messageFromWorker == "INIT") {
+                        resolve(messageFromWorker)
+                    }
                     console.log(messageFromWorker)
-                    return resolve
                 }
             );
             worker.on(

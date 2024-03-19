@@ -27,7 +27,7 @@ async function addWorker(req, res, next){
 
     let instance = WorkersService.getInstance();
     let {workerName,scriptName} = req.body;
-    const worker = instance.addWorker({workerName,scriptName,port});
+    const worker = await instance.addWorker({workerName,scriptName,port});
     res.json(port);
   } catch (error) {
     console.error(`>>> ${error} ${error.stack}`)

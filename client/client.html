@@ -19,6 +19,7 @@
 </html>
 
 <script>
+    let ip = '127.0.0.1'
     let btn_get = document.getElementById("btn_get")
     let btn_create = document.getElementById("btn_create")
     let btn_update = document.getElementById("btn_update")
@@ -41,7 +42,7 @@
         const newWorkerName = 'monWorkerNEWWW'
         const scriptName = `worker2`;
         const reponse = await fetch(
-            "http://localhost:3000/api/v1/workers",
+            "http://" + ip + ":3000/api/v1/workers",
             {
                 method: "POST",
                 headers: {
@@ -52,9 +53,12 @@
         );
         //On récupère le worker créé... ou pas!
         const port = await reponse.json();
+
         /* Partie consacrée à la communication avec le worker créé */
-        // Créer une connexion WebSocket avec le worker (on suppose que le port est 8080)
-        const socket = new WebSocket("ws://localhost:"+port);
+        // Créer une connexion WebSocket avec le worker
+        const websocker_url = "ws://localhost:" + port;
+        console.log(websocker_url)
+        const socket = new WebSocket(websocker_url);
         // La connexion une fois ouverte, on salue son worker
         socket.addEventListener("open", function (event) {
             socket.send("Bonjour mon worker!");

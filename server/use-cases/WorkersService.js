@@ -18,11 +18,11 @@ class WorkersService extends Map{
 		return this.instance;
 	}
 	
-	addWorker({workerName,scriptName,port}){
+	async addWorker({workerName,scriptName,port}){
   		let newWorker;
   		try{
 			newWorker = new MyWorker({workerName,scriptName,workersService:this,port});
-			newWorker.start();
+			let res = await newWorker.start();
 		} catch (error){
 			throw Error(`cannot create Worker ${error} ${error.stack}`);
 		}

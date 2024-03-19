@@ -33,5 +33,6 @@ wss.on('connection', function connection(wss) {
   })
 });
 
-
+//send message
+parentPort.postMessage("INIT")
 
