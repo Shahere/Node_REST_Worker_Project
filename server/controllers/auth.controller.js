@@ -9,8 +9,17 @@ function getToken(req, res, next) {
         let username = req.body.username;
         let password = req.body.password;
 
-        //TODO verify
-        return jwt.sign({"username":username,"password":password},PERSON_API_ACCES_TOKEN_SECRET , {expiresIn: "150m"}) 
+
+        let passwordauth = process.env.PASSWORDAUTH
+        let usernameauth = process.env.USERNAMEAUTH
+
+        if (username == usernameauth && password == passwordauth) {
+            let token = jwt.sign({ "username": username, "password": password }, process.env.SECRET_KEY, { expiresIn: "150m" })
+            res.json(token)
+        } else {
+            console.log("False conditions")
+            res.status(400).send("Can't authentificate to server")
+        }
     } catch (error) {
         console.error(`>>> ${error} ${error.stack}`)
         res.status(500).send('Internal Server Error')

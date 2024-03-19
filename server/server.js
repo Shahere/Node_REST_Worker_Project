@@ -23,5 +23,5 @@ app.use(WorkersAPIBaseURL, workersRouter);
 app.use(AuthentificationAPIBaseURL, authRouter)
 
 app.listen(port, () => {
-  console.log(`Server is listening on http://localhost:${port}${WorkersAPIBaseURL}`)
+  console.log(`Server is listening on http://localhost:${port}`)
 })
