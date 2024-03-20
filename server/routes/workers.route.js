@@ -10,6 +10,11 @@ router.use(function (req, res, next) {
 
 router.use('/', function (req, res, next) {
     const authHeader = req.headers['authorization']
+
+    if(!authHeader) {
+        res.sendStatus(403)
+    }
+
     const token = authHeader.split(' ')[1] || authHeader
     if (token == null) return res.sendStatus(401)
 

@@ -30,32 +30,53 @@
     let btn_create = document.getElementById("btn_create")
     let btn_update = document.getElementById("btn_update")
     let btn_delete = document.getElementById("btn_delete")
-    let token = null;
-    let username = "TOTO"
-    let password = "PASSWORD"
-    fetch(
-        "http://" + ip + ":3000/api/v1/auth",
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ username, password })
-        }
-    ).then((reponsetoken) => {
-        reponsetoken.json().then((tokenA) => {
-            console.log(tokenA)
-            token = tokenA;
 
-        })
+    let btn_token_n = document.getElementById("btn_token_n")
+    let btn_token_a = document.getElementById("btn_token_a")
+
+    let token = null;
+
+    btn_token_n.addEventListener("click", async () => {
+        let username = "TOTO"
+        let password = "PASSWORD"
+        let tokenresponse = await fetch(
+            "http://" + ip + ":3000/api/v1/auth",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ username, password })
+            }
+        )
+        let tokenA = await tokenresponse.json()
+        token = tokenA
+        console.log(token)
     })
 
+    btn_token_a.addEventListener("click", async () => {
+        let username = "EWEN"
+        let password = "PASSWORD"
+        let tokenresponse = await fetch(
+            "http://" + ip + ":3000/api/v1/auth",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ username, password })
+            }
+        )
+        let tokenA = await tokenresponse.json()
+        token = tokenA
+        console.log(token)
+    })
 
     btn_get.addEventListener("click", async () => {
         const reponse = await fetch(
             "http://localhost:3000/api/v1/workers",
             {
-                headers: {Authorization: "Bearer "+token},
+                headers: { Authorization: "Bearer " + token },
                 method: "GET",
             }
         );
@@ -72,7 +93,8 @@
             {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + token
                 },
                 body: JSON.stringify({ workerName, scriptName })
             }
@@ -107,7 +129,8 @@
             {
                 method: "DELETE",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + token
                 },
                 body: JSON.stringify({ workerName })
             }
@@ -122,7 +145,8 @@
             {
                 method: "PATCH",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + token
                 },
                 body: JSON.stringify({ oldWorkerName, newWorkerName })
             }
