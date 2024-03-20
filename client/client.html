@@ -9,8 +9,7 @@
 <body>
     <h1>Hello world!</h1>
     <div class="token">
-        <button id="btn_token_n">GET normal TOKEN</button>
-        <button id="btn_token_a">GET admin TOKEN</button>
+        <button id="btn_token_n">GET TOKEN</button>
     </div>
     <div class="api">
         <button id="btn_get">GET</button>
@@ -32,30 +31,11 @@
     let btn_delete = document.getElementById("btn_delete")
 
     let btn_token_n = document.getElementById("btn_token_n")
-    let btn_token_a = document.getElementById("btn_token_a")
 
     let token = null;
 
     btn_token_n.addEventListener("click", async () => {
         let username = "TOTO"
-        let password = "PASSWORD"
-        let tokenresponse = await fetch(
-            "http://" + ip + ":3000/api/v1/auth",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ username, password })
-            }
-        )
-        let tokenA = await tokenresponse.json()
-        token = tokenA
-        console.log(token)
-    })
-
-    btn_token_a.addEventListener("click", async () => {
-        let username = "EWEN"
         let password = "PASSWORD"
         let tokenresponse = await fetch(
             "http://" + ip + ":3000/api/v1/auth",
