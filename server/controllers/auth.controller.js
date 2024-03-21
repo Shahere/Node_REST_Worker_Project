@@ -9,6 +9,8 @@ function getToken(req, res, next) {
 
         let token = null;
 
+        let secretKey = process.env.SECRET_KEY
+
         let passwordauth = process.env.PASSWORDAUTH
         let usernameauth = process.env.USERNAMEAUTH
 
@@ -16,10 +18,10 @@ function getToken(req, res, next) {
         let usernameauthadmin = process.env.USERNAMEAUTHADMIN
 
         if (username == usernameauth && password == passwordauth) {
-            token = jwt.sign({ "username": username, "password": password, "role": process.env.VISITOR }, process.env.SECRET_KEY, { expiresIn: "150m" })
+            token = jwt.sign({ "username": username, "password": password, "role": process.env.VISITOR }, secretKey, { expiresIn: "150m" })
             res.json(token)
         } else if(username == usernameauthadmin && password == passwordauthadmin) {
-            token = jwt.sign({ "username": username, "password": password, "role": process.env.ADMIN }, process.env.SECRET_KEY, { expiresIn: "150m" })
+            token = jwt.sign({ "username": username, "password": password, "role": process.env.ADMIN }, secretKey, { expiresIn: "150m" })
             res.json(token)
         }
         else {
