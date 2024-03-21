@@ -12,7 +12,8 @@
         <button id="btn_token_n">GET TOKEN</button>
     </div>
     <div class="api">
-        <button id="btn_get">GET</button>
+        <button id="btn_get_spe">GET</button>
+        <button id="btn_get">GET ALL</button>
         <button id="btn_create">CREATE</button>
         <button id="btn_update">UPDATE</button>
         <button id="btn_delete">DELETE</button>
@@ -26,6 +27,7 @@
 <script>
     let ip = '127.0.0.1'
     let btn_get = document.getElementById("btn_get")
+    let btn_get_spe = document.getElementById("btn_get_spe")
     let btn_create = document.getElementById("btn_create")
     let btn_update = document.getElementById("btn_update")
     let btn_delete = document.getElementById("btn_delete")
@@ -52,6 +54,20 @@
         console.log(token)
     })
 
+    btn_get_spe.addEventListener("click", async () => {
+        const workerName = `monWorker`;
+        const reponse = await fetch(
+            "http://localhost:3000/api/v1/workers/" + workerName,
+            {
+                headers: { Authorization: "Bearer " + token },
+                method: "GET",
+            }
+        );
+        if (await reponse.status != 403) {
+            let responseClear = await reponse.json();
+            console.log(responseClear)
+        }    })
+
     btn_get.addEventListener("click", async () => {
         const reponse = await fetch(
             "http://localhost:3000/api/v1/workers",
@@ -60,7 +76,10 @@
                 method: "GET",
             }
         );
-        console.log(await reponse.json())
+        if (await reponse.status != 403) {
+            let responseClear = await reponse.json();
+            console.log(responseClear)
+        }
     })
 
     btn_create.addEventListener("click", async () => {

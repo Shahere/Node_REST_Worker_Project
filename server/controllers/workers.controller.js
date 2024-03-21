@@ -12,22 +12,35 @@ function getWorkers(req, res, next) {
   }
 }
 
+async function getWorker(req, res, next) {
+  try {
+    let instance = WorkersService.getInstance();
+    const worker = await instance.getWorker(req.params.workerName)
+    if (!worker) {
+      res.sendStatus(404)
+    } else {
+      res.json(worker);
+    }
+  } catch (error) {
+    console.error(`>>> ${error} ${error.stack}`)
+    res.status(404).send(`Ressource Not Found`)
+  }
+}
 
-
-async function addWorker(req, res, next){
+async function addWorker(req, res, next) {
   try {
     let port = null;
     let portInstance = PortExplorer.getInstance()
     await portInstance.getAvailablePort(3000, 9000, (err, portA) => {
-      if(err) {
-        console.error('Error findong a port : '+err)
+      if (err) {
+        console.error('Error findong a port : ' + err)
       }
       port = portA
     });
 
     let instance = WorkersService.getInstance();
-    let {workerName,scriptName} = req.body;
-    const worker = await instance.addWorker({workerName,scriptName,port});
+    let { workerName, scriptName } = req.body;
+    const worker = await instance.addWorker({ workerName, scriptName, port });
     res.json(port);
   } catch (error) {
     console.error(`>>> ${error} ${error.stack}`)
@@ -66,7 +79,8 @@ function deleteWorker(req, res, next) {
 
 module.exports = {
   getWorkers,
-  addWorker, 
+  getWorker,
+  addWorker,
   updateWorker,
   deleteWorker
 }
