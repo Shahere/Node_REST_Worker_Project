@@ -1,6 +1,11 @@
 const { parentPort, workerData } = require('worker_threads')
 const { WebSocketServer } = require('ws');
-const logger = require('logger').createLogger("logs/"+workerData.name+"-"+new Date().toISOString())
+let logger;
+try{
+   logger = require('logger').createLogger("logs/"+workerData.name+"-"+new Date().toISOString())
+}catch (e) {
+  logger = require('logger').createLogger()
+}
 logger.setLevel('debug')
 logger.info("PORT: "+workerData.port)
 const wss = new WebSocketServer({ port: workerData.port });

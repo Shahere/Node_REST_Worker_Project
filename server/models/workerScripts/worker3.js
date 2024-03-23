@@ -4,9 +4,9 @@ add(0);
 function add(i){
   if (i !== 10) {
     setTimeout(()=>{add(i+1)},1000)
-    console.log(` ${workerData.workerName} : ${i}`)
+    console.log(` ${workerData.name} : ${i}`)
   }else{
-    const message = workerData.workerName +' is Done. ' 
+    const message = workerData.name +' is Done. '
     parentPort.postMessage(message)
   }
 }

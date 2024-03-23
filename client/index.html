@@ -15,6 +15,7 @@
         <button id="btn_get_spe">GET</button>
         <button id="btn_get">GET ALL</button>
         <button id="btn_create">CREATE</button>
+        <button id="btn_start">START</button>
         <button id="btn_update">UPDATE</button>
         <button id="btn_delete">DELETE</button>
     </div>
@@ -25,12 +26,14 @@
 </html>
 
 <script>
+    let id;
     let ip = '127.0.0.1'
     let btn_get = document.getElementById("btn_get")
     let btn_get_spe = document.getElementById("btn_get_spe")
     let btn_create = document.getElementById("btn_create")
     let btn_update = document.getElementById("btn_update")
     let btn_delete = document.getElementById("btn_delete")
+    let btn_start = document.getElementById("btn_start")
 
     let btn_token_n = document.getElementById("btn_token_n")
 
@@ -84,18 +87,34 @@
 
     btn_create.addEventListener("click", async () => {
         const workerName = `monWorker`;
-        const oldWorkerName = 'monWorker';
-        const newWorkerName = 'monWorkerNEWWW'
         const scriptName = `worker2`;
-        const reponse = await fetch(
+        const res = await fetch(
             "http://" + ip + ":3000/api/v1/workers",
             {
                 method: "POST",
                 headers: {
+                    Authorization: "Bearer " + token,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({workerName, scriptName})
+            }
+        )
+
+        id = await res.json()
+        console.log(`Worker ${id} created`)
+    })
+
+    btn_start.addEventListener("click", async () => {
+        const action = `start`
+        const reponse = await fetch(
+            `http://localhost:3000/api/v1/workers/${id}`,
+            {
+                method: "PATCH",
+                headers: {
                     "Content-Type": "application/json",
                     Authorization: "Bearer " + token
                 },
-                body: JSON.stringify({ workerName, scriptName })
+                body: JSON.stringify({action})
             }
         );
         //On récupère le worker créé... ou pas!
@@ -118,36 +137,33 @@
         socket.addEventListener("error", function (err) {
             console.error(err)
         })
-
     })
 
     btn_delete.addEventListener("click", async () => {
         const workerName = `monWorker`;
         const reponse = await fetch(
-            "http://localhost:3000/api/v1/workers",
+            `http://localhost:3000/api/v1/workers/${id}`,
             {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: "Bearer " + token
-                },
-                body: JSON.stringify({ workerName })
+                }
             }
         );
     })
 
     btn_update.addEventListener("click", async () => {
-        const oldWorkerName = 'monWorker';
         const newWorkerName = 'monWorkerNEWWW'
-        const reponse = await fetch(
-            "http://localhost:3000/api/v1/workers",
+        id = await fetch(
+            `http://localhost:3000/api/v1/workers/${id}`,
             {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: "Bearer " + token
                 },
-                body: JSON.stringify({ oldWorkerName, newWorkerName })
+                body: JSON.stringify({ newWorkerName })
             }
         );
     })
