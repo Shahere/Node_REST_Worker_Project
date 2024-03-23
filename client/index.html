@@ -88,7 +88,7 @@
     btn_create.addEventListener("click", async () => {
         const workerName = `monWorker`;
         const scriptName = `worker2`;
-        id = await fetch(
+        const res = await fetch(
             "http://" + ip + ":3000/api/v1/workers",
             {
                 method: "POST",
@@ -99,10 +99,13 @@
                 body: JSON.stringify({workerName, scriptName})
             }
         )
+
+        id = await res.json()
+        console.log(`Worker ${id} created`)
     })
 
     btn_start.addEventListener("click", async () => {
-        const action = "start"
+        const action = `start`
         const reponse = await fetch(
             `http://localhost:3000/api/v1/workers/${id}`,
             {
@@ -111,7 +114,7 @@
                     "Content-Type": "application/json",
                     Authorization: "Bearer " + token
                 },
-                body: JSON.stringify(action)
+                body: JSON.stringify({action})
             }
         );
         //On récupère le worker créé... ou pas!
