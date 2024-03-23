@@ -50,9 +50,6 @@ async function updateWorker(req, res, next) {
     console.log(req.body)
     let action = req.body.action
     if(action === "start"){
-
-      const worker = instance.get(id)
-      if (worker){
         console.log("Start worker "+id)
         let port = null;
         let portInstance = PortExplorer.getInstance()
@@ -62,14 +59,8 @@ async function updateWorker(req, res, next) {
           }
           port = portA
         });
-        console.log("Port "+port+" used for worker "+id)
-        worker.setPort(port)
-        await worker.start()
+        await instance.startWorker(id, port)
         res.json(port)
-      }else{
-        console.log("Worker "+id+" not found")
-        res.status(500).send('Internal Server Error')
-      }
     }else {
       let newKey = req.body.newWorkerName
       instance.update(id, newKey)

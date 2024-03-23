@@ -29,6 +29,17 @@ class WorkersService extends Map {
 		return newWorker.dump();
 	}
 
+	async startWorker(workerName, port){
+		let worker = this.get(workerName)
+		if (worker){
+			console.log("Port "+port+" used for worker "+workerName)
+			worker.setPort(port)
+			await worker.start()
+		}else{
+			throw Error(`Cannot find worker ${workerName}`);
+		}
+	}
+
 	getWorkers() {
 		return Array.from(this);
 	}
