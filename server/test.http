@@ -1,0 +1,23 @@
+POST http://localhost:3000/api/v1/workers
+Content-Type: application/json
+
+{
+  "workerName": "test",
+  "scriptName": "worker2"
+}
+
+### START
+PATCH http://localhost:3000/api/v1/workers/test
+Content-Type: application/json
+
+{
+  "action": "start"
+}
+
+### UPDATE
+PATCH http://localhost:3000/api/v1/workers/test
+Content-Type: application/json
+
+{
+  "action": "start"
+}

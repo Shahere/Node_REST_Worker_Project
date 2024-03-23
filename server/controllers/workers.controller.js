@@ -1,5 +1,7 @@
 const { WorkersService } = require('../use-cases/WorkersService')
 const { PortExplorer } = require('../use-cases/PortExplorer')
+const {text} = require("express");
+const {createServer} = require("net");
 
 function getWorkers(req, res, next) {
   try {
@@ -29,18 +31,9 @@ async function getWorker(req, res, next) {
 
 async function addWorker(req, res, next) {
   try {
-    let port = null;
-    let portInstance = PortExplorer.getInstance()
-    await portInstance.getAvailablePort(3000, 9000, (err, portA) => {
-      if (err) {
-        console.error('Error findong a port : ' + err)
-      }
-      port = portA
-    });
-
     let instance = WorkersService.getInstance();
     let {workerName,scriptName} = req.body;
-    const worker = await instance.addWorker({workerName,scriptName,port});
+    const worker = await instance.addWorker({workerName,scriptName});
     res.json(workerName);
   } catch (error) {
     console.error(`>>> ${error} ${error.stack}`)
@@ -48,28 +41,40 @@ async function addWorker(req, res, next) {
   }
 }
 
-async function start(req, res, next) {
-  console.log("Start req " + req.body + "...")
-  try {
-    let instance = WorkersService.getInstance();
-    let newWorker = instance.get("test");
-    let res = await newWorker.start();
-    res.json(res)
-  } catch (error) {
-    console.error(`>>> ${error} ${error.stack}`)
-    res.status(500).send('Internal Server Error')
-  }
-}
 
-function updateWorker(req, res, next) {
-  console.log("Update...")
+async function updateWorker(req, res, next) {
+  console.log("Update..."+req.params["id"])
+  let id = req.params["id"];
   try {
     let instance = WorkersService.getInstance();
     console.log(req.body)
-    let oldKey = req.body.oldWorkerName
-    let newKey = req.body.newWorkerName
-    instance.update(oldKey, newKey)
-    res.json(newKey)
+    let action = req.body.action
+    if(action === "start"){
+
+      const worker = instance.get(id)
+      if (worker){
+        console.log("Start worker "+id)
+        let port = null;
+        let portInstance = PortExplorer.getInstance()
+        await portInstance.getAvailablePort(3000, 9000, (err, portA) => {
+          if(err) {
+            console.error('Error findong a port : '+err)
+          }
+          port = portA
+        });
+        console.log("Port "+port+" used for worker "+id)
+        worker.setPort(port)
+        await worker.start()
+        res.json(port)
+      }else{
+        console.log("Worker "+id+" not found")
+        res.status(500).send('Internal Server Error')
+      }
+    }else {
+      let newKey = req.body.newWorkerName
+      instance.update(id, newKey)
+      res.json(newKey)
+    }
   } catch (error) {
     console.error(`>>> ${error} ${error.stack}`)
     res.status(500).send('Internal Server Error')
@@ -77,25 +82,13 @@ function updateWorker(req, res, next) {
 }
 
 function deleteWorker(req, res, next) {
-  console.log("Delete...")
+  let id = req.params["id"];
+  console.log("Delete... "+id)
   try {
     let instance = WorkersService.getInstance();
-    instance.terminate(req.body.workerName)
-    instance.remove(req.body.workerName)
-    res.json(req.body.workerName)
-  } catch (error) {
-    console.error(`>>> ${error} ${error.stack}`)
-    res.status(500).send('Internal Server Error')
-  }
-}
-
-function stop(req, res, next) {
-  console.log("Delete...")
-  try {
-    let instance = WorkersService.getInstance();
-    instance.terminate(req.body.workerName)
-    instance.remove(req.body.workerName)
-    res.json(req.body.workerName)
+    instance.terminate(id)
+    instance.remove(id)
+    res.json(id)
   } catch (error) {
     console.error(`>>> ${error} ${error.stack}`)
     res.status(500).send('Internal Server Error')
@@ -108,7 +101,5 @@ module.exports = {
   getWorker,
   addWorker,
   updateWorker,
-  deleteWorker,
-  start,
-  stop
+  deleteWorker
 }

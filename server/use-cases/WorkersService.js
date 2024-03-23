@@ -22,6 +22,7 @@ class WorkersService extends Map {
   		let newWorker;
   		try{
 			newWorker = new MyWorker({workerName,scriptName,workersService:this,port});
+			this.set(workerName, newWorker)
 		} catch (error){
 			throw Error(`cannot create Worker ${error} ${error.stack}`);
 		}
