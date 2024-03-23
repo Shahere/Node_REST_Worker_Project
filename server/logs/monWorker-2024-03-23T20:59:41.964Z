@@ -99,3 +99,8 @@ debug [Sat Mar 23 2024 22:01:14 GMT+0100 (Central European Standard Time)]  monW
 debug [Sat Mar 23 2024 22:01:15 GMT+0100 (Central European Standard Time)]  monWorker says that i is 94
 debug [Sat Mar 23 2024 22:01:16 GMT+0100 (Central European Standard Time)]  monWorker says that i is 95
 debug [Sat Mar 23 2024 22:01:17 GMT+0100 (Central European Standard Time)]  monWorker says that i is 96
+debug [Sat Mar 23 2024 22:01:18 GMT+0100 (Central European Standard Time)]  monWorker says that i is 97
+debug [Sat Mar 23 2024 22:01:19 GMT+0100 (Central European Standard Time)]  monWorker says that i is 98
+debug [Sat Mar 23 2024 22:01:20 GMT+0100 (Central European Standard Time)]  monWorker says that i is 99
+debug [Sat Mar 23 2024 22:01:21 GMT+0100 (Central European Standard Time)]  monWorker says that i is 100
+info [Sat Mar 23 2024 22:01:22 GMT+0100 (Central European Standard Time)]  monWorker is done
